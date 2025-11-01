@@ -48,6 +48,9 @@ The AI runs through a backend API or TensorFlow Lite (for offline prediction).
 ## 📸 Screenshots
 
 ![](assets/Screenshot_20250407_142151.png)
+![](assets/Screenshot_2025-11-01-16-53-51-173_com.example.skin_disease.jpg)
+![](assets/Screenshot_2025-11-01-16-53-55-277_com.example.skin_disease.jpg)
+![](assets/Screenshot_2025-11-01-16-54-41-906_com.example.skin_disease.jpg)
 ![](assets/Screenshot_20250407_142229.png)
 ![](assets/Screenshot_20250407_142252.png)
 ![](assets/Screenshot_20250407_142305.png)
