@@ -47,10 +47,10 @@ The AI runs through a backend API or TensorFlow Lite (for offline prediction).
 
 ## 📸 Screenshots
 
-![](assets/splash.jpg)
-![](assets/rewards.jpg)
-![](assets/reward_details.jpg)
-![](assets/confirmation_modal.jpg)
+![](assets/Screenshot_20250407_142151.png)
+![](assets/Screenshot_20250407_142229.png)
+![](assets/Screenshot_20250407_142252.png)
+![](assets/Screenshot_20250407_142305.png)
  
 Example sections:
 ```
