@@ -3,8 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'cubit/skin_cubit.dart';
-import 'cubit/skin_state.dart';
+import 'core/skin_cubit.dart';
+import 'core/skin_state.dart';
 class UploadFileScreen extends StatefulWidget {
   const UploadFileScreen({super.key});
   @override

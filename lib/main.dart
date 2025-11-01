@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'cubit/skin_cubit.dart';
+import 'core/skin_cubit.dart';
 import 'login.dart';
 import 'rest.dart';
 import 'signup.dart';
