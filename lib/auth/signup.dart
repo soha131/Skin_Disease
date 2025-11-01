@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:skin_disease/user_model.dart';
+
+import '../core/models/user_model.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
   @override

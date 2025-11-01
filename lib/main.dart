@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'core/skin_cubit.dart';
-import 'login.dart';
-import 'rest.dart';
-import 'signup.dart';
-import 'splash.dart';
-import 'upload_image.dart';
+import 'auth/reset_password.dart';
+import 'core/cubit/skin_cubit.dart';
+import 'auth/login.dart';
+import 'auth/signup.dart';
+import 'features/splash.dart';
+import 'features/upload_image.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();

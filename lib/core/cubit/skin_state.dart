@@ -1,4 +1,5 @@
-import '../skin_model.dart';
+
+import '../models/skin_model.dart';
 
 abstract class SkinPredictionState {}
 

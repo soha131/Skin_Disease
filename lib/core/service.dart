@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
-import 'skin_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+
+import 'models/skin_model.dart';
 
 class ApiService {
 

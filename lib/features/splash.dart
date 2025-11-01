@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skin_disease/signup.dart';
+import 'package:skin_disease/auth/signup.dart';
 class Splash extends StatefulWidget {
   const Splash({super.key});
   @override

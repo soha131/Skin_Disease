@@ -1,30 +1,32 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:skin_disease/user_model.dart';
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+
+import '../core/models/user_model.dart';
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
-  final _newPasswordController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return  Scaffold(
         body: Stack(
           children: [
             Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(
-              color: Color(0xff385e61)
+              decoration: BoxDecoration(
+               color: Color(0xff385e61)
               ),
             ),
+
             Positioned(
               top: screenHeight * 0.3,
               left: 0,
@@ -44,7 +46,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     Padding(
                       padding: EdgeInsets.only(bottom: screenHeight * 0.03),
                       child: Text(
-                        "Reset Password".tr(),
+                        "Login".tr(),
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -53,7 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _buildLabel("Enter your email".tr(), screenWidth),
+                    _buildLabel("EMAIL".tr(), screenWidth),
                     _buildTextField(
                       hintText: "*****@gmail.com".tr(),
                       icon: Icons.email,
@@ -61,13 +63,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       controller: _emailController,
                     ),
                     const SizedBox(height: 15),
-                    _buildLabel("Enter new password".tr(), screenWidth),
+                    _buildLabel("PASSWORD".tr(), screenWidth),
                     _buildTextField(
                       hintText: "******",
                       icon: Icons.lock,
                       screenWidth: screenWidth,
                       isPassword: true,
-                      controller: _newPasswordController,
+                      controller: _passwordController,
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
@@ -77,16 +79,33 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xff385e61),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              screenWidth * 0.03,
-                            ),
+                            borderRadius: BorderRadius.circular(screenWidth * 0.03),
                           ),
                         ),
-                        onPressed: _resetPassword,
+                        onPressed: _login,
                         child: Text(
-                          "Reset Password".tr(),
+                          "Log in".tr(),
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "Rest");
+                      },
+                      child: Text(
+                        "Forgot Password?".tr(),
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "Signup");
+                      },
+                      child: Text(
+                        "Sign Up!".tr(),
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ],
@@ -95,10 +114,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Locale newLocale = context.locale.languageCode == 'en' ? const Locale('ar') : const Locale('en');
+            context.setLocale(newLocale);
 
+          },
+          backgroundColor: Colors.white,
+          child: Icon(Icons.language, color: Color(0xff385e61)),
+        ),
     );
   }
-
   Widget _buildLabel(String text, double screenWidth) {
     return Padding(
       padding: EdgeInsets.only(left: screenWidth * 0.03, bottom: 5),
@@ -115,7 +141,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
   }
-
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,
@@ -129,6 +154,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         controller: controller,
         cursorColor: Colors.grey,
         obscureText: isPassword && !_isPasswordVisible,
+        textAlign: TextAlign.left,
         decoration: InputDecoration(
           hintText: hintText,
           filled: true,
@@ -158,35 +184,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  Future<void> _resetPassword() async {
-    if (_emailController.text.isEmpty || _newPasswordController.text.isEmpty) {
+  Future<void> _login() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please fill all fields".tr())),
+        SnackBar(content: Text("Please fill all fields")),
       );
       return;
     }
+
     var box = await Hive.openBox('userBox');
     var userMap = await box.get('user');
 
     if (userMap == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("No account found with this email")),
+        SnackBar(content: Text("No account found, please sign up first")),
       );
       return;
     }
-    var user = User.fromMap(Map<String, dynamic>.from(userMap));
-    if (_emailController.text == user.email) {
-      user.password = _newPasswordController.text;
-      await box.put('user', user.toMap());
 
+    var user = User.fromMap(Map<String, dynamic>.from(userMap));
+
+    if (_emailController.text == user.email && _passwordController.text == user.password) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Password reset successful!".tr())),
+        SnackBar(content: Text("Login successful!")),
       );
-      Navigator.pushReplacementNamed(context, "Login");
+      Navigator.pushReplacementNamed(context, "upload");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Email not found".tr())),
+        SnackBar(content: Text("Invalid email or password")),
       );
     }
   }
+
 }

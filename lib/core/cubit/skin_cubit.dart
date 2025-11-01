@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import '../skin_model.dart';
+import '../models/skin_model.dart';
 import '../service.dart';
 import 'skin_state.dart';
 

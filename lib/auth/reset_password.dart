@@ -1,31 +1,31 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:skin_disease/user_model.dart';
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+
+import '../core/models/user_model.dart';
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
-class _LoginScreenState extends State<LoginScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return  Scaffold(
+    return Scaffold(
         body: Stack(
           children: [
             Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(
-               color: Color(0xff385e61)
+              decoration: const BoxDecoration(
+              color: Color(0xff385e61)
               ),
             ),
-
             Positioned(
               top: screenHeight * 0.3,
               left: 0,
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: EdgeInsets.only(bottom: screenHeight * 0.03),
                       child: Text(
-                        "Login".tr(),
+                        "Reset Password".tr(),
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _buildLabel("EMAIL".tr(), screenWidth),
+                    _buildLabel("Enter your email".tr(), screenWidth),
                     _buildTextField(
                       hintText: "*****@gmail.com".tr(),
                       icon: Icons.email,
@@ -62,13 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                     ),
                     const SizedBox(height: 15),
-                    _buildLabel("PASSWORD".tr(), screenWidth),
+                    _buildLabel("Enter new password".tr(), screenWidth),
                     _buildTextField(
                       hintText: "******",
                       icon: Icons.lock,
                       screenWidth: screenWidth,
                       isPassword: true,
-                      controller: _passwordController,
+                      controller: _newPasswordController,
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
@@ -78,33 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xff385e61),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                            borderRadius: BorderRadius.circular(
+                              screenWidth * 0.03,
+                            ),
                           ),
                         ),
-                        onPressed: _login,
+                        onPressed: _resetPassword,
                         child: Text(
-                          "Log in".tr(),
+                          "Reset Password".tr(),
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "Rest");
-                      },
-                      child: Text(
-                        "Forgot Password?".tr(),
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "Signup");
-                      },
-                      child: Text(
-                        "Sign Up!".tr(),
-                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ],
@@ -113,17 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Locale newLocale = context.locale.languageCode == 'en' ? const Locale('ar') : const Locale('en');
-            context.setLocale(newLocale);
 
-          },
-          backgroundColor: Colors.white,
-          child: Icon(Icons.language, color: Color(0xff385e61)),
-        ),
     );
   }
+
   Widget _buildLabel(String text, double screenWidth) {
     return Padding(
       padding: EdgeInsets.only(left: screenWidth * 0.03, bottom: 5),
@@ -140,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,
@@ -153,7 +130,6 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: controller,
         cursorColor: Colors.grey,
         obscureText: isPassword && !_isPasswordVisible,
-        textAlign: TextAlign.left,
         decoration: InputDecoration(
           hintText: hintText,
           filled: true,
@@ -183,36 +159,35 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+  Future<void> _resetPassword() async {
+    if (_emailController.text.isEmpty || _newPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please fill all fields")),
+        SnackBar(content: Text("Please fill all fields".tr())),
       );
       return;
     }
-
     var box = await Hive.openBox('userBox');
     var userMap = await box.get('user');
 
     if (userMap == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("No account found, please sign up first")),
+        SnackBar(content: Text("No account found with this email")),
       );
       return;
     }
-
     var user = User.fromMap(Map<String, dynamic>.from(userMap));
+    if (_emailController.text == user.email) {
+      user.password = _newPasswordController.text;
+      await box.put('user', user.toMap());
 
-    if (_emailController.text == user.email && _passwordController.text == user.password) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login successful!")),
+        SnackBar(content: Text("Password reset successful!".tr())),
       );
-      Navigator.pushReplacementNamed(context, "upload");
+      Navigator.pushReplacementNamed(context, "Login");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid email or password")),
+        SnackBar(content: Text("Email not found".tr())),
       );
     }
   }
-
 }

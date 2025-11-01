@@ -38,10 +38,10 @@ The AI runs through a backend API or TensorFlow Lite (for offline prediction).
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|-------------|
-| **Frontend** | Flutter (Dart) |
-| **State Management** | Bloc / Cubit |
+| Layer                | Technology     |
+|----------------------|----------------|
+| **Frontend**         | Flutter (Dart) |
+| **State Management** | Bloc / Cubit   |
 
 ---
 
@@ -88,16 +88,14 @@ flutter run
 lib/
 │
 ├── core/
-│   ├── api/
+│   ├── service/
 │   ├── models/
-│   ├── utils/
 │   └── cubit/
 │
 ├── features/
-│   ├── home/
-│   ├── categories/
-│   ├── details/
-│   └── ai_identifier/
+│   ├── splash/
+│   └── upload_image/
+│   
 │
 └── main.dart
 ```
